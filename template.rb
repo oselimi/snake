@@ -50,7 +50,6 @@ end
 def copy_templates
 
   copy_file "Procfile"
-  copy_file "Procfile.dev"
 
   directory "app", force: true
   directory "lib", force: true

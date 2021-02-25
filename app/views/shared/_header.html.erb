@@ -1,0 +1,20 @@
+<header class="text-gray-700 body-font border-b border-gray-200">
+  <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+   <%= link_to root_path, class:"flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0" do%>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+      </svg>
+      <span class="ml-3 text-xl">Snake App</span>
+    <% end %>
+    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+      <%= link_to "Home", root_path, class:"mr-5 hover:text-gray-900"%>
+    </nav>
+      <% if user_signed_in? %>
+        <%= link_to "Profile", edit_user_registration_path, class:"inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"%>
+        <%= link_to "Logout", destroy_user_session_path, method: :delete ,class:"inline-flex text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg"%>
+      <% else %>
+        <%= link_to "Login", new_user_session_path, class:"inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"%>
+        <%= link_to "Sign Up", new_user_registration_path, class:"ml-4 inline-flex text-gray-700 bg-gray-200 border-0 py-2 px-6 focus:outline-none hover:bg-gray-300 rounded text-lg"%>
+      <% end %>
+  </div>
+</header>

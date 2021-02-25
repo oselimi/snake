@@ -7,15 +7,15 @@ require "shellwords"
 def add_template_repository_to_source_path
   if __FILE__ =~ %r{\Ahttps?://}
     require "tmpdir"
-    source_paths.unshift(tempdir = Dir.mktmpdir("jumpstart-"))
+    source_paths.unshift(tempdir = Dir.mktmpdir("snake-"))
     at_exit { FileUtils.remove_entry(tempdir) }
     git clone: [
       "--quiet",
-      "https://github.com/excid3/jumpstart.git",
+      "https://github.com/oselimi/snake.git",
       tempdir
     ].map(&:shellescape).join(" ")
 
-    if (branch = __FILE__[%r{jumpstart/(.+)/template.rb}, 1])
+    if (branch = __FILE__[%r{snake/(.+)/template.rb}, 1])
       Dir.chdir(tempdir) { git checkout: branch }
     end
   else
@@ -90,7 +90,6 @@ def add_users
   generate :devise, "User",
            "first_name",
            "last_name",
-           "announcements_last_read_at:datetime",
            "admin:boolean"
 
   # Set admin default to false
@@ -176,15 +175,6 @@ def add_sidekiq
   insert_into_file "config/routes.rb", "#{content}\n\n", after: "Rails.application.routes.draw do\n"
 end
 
-def add_announcements
-  generate "model Announcement published_at:datetime announcement_type name description:text"
-  route "resources :announcements, only: [:index]"
-end
-
-def add_notifications
-  generate "noticed:model"
-  route "resources :notifications, only: [:index]"
-end
 
 def add_administrate
   generate "administrate:install"
@@ -284,8 +274,6 @@ after_bundle do
   add_authorization
   add_webpack
   add_javascript
-  add_announcements
-  add_notifications
   add_multiple_authentication
   add_sidekiq
   add_friendly_id

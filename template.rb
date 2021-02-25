@@ -1,5 +1,20 @@
-def source_paths
-  [File.expand_path(File.dirname(__FILE__))]
+def add_template_repository_to_source_path
+  if __FILE__ =~ %r{\Ahttps?://}
+    require "tmpdir"
+    source_paths.unshift(tempdir = Dir.mktmpdir("snake-"))
+    at_exit { FileUtils.remove_entry(tempdir) }
+    git clone: [
+      "--quiet",
+      "https://github.com/oselimi/snake.git",
+      tempdir
+    ].map(&:shellescape).join(" ")
+
+    if (branch = __FILE__[%r{snake/(.+)/template.rb}, 1])
+      Dir.chdir(tempdir) { git checkout: branch }
+    end
+  else
+    source_paths.unshift(File.dirname(__FILE__))
+  end
 end
 
 def add_gems
@@ -35,6 +50,7 @@ end
 def copy_templates
 
   copy_file "Procfile"
+  copy_file "Procfile.dev"
 
   directory "app", force: true
   directory "lib", force: true

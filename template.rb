@@ -33,7 +33,14 @@ def add_users
 end
 
 def copy_templates
+
+  copy_file "Procfile"
+
   directory "app", force: true
+  directory "lib", force: true
+
+  route "get '/about', to: 'home#about'"
+  route "get '/contact', to: 'home#contact'"
 end
 
 def add_tailwind
@@ -99,7 +106,7 @@ after_bundle do
   git commit: %Q{ -m "Initial commit" }
 
   say
-  say "Kickoff app successfully created! 👍", :green
+  say "Snake app successfully created! 👍", :green
   say
   say "Switch to your app by running:"
   say "$ cd #{app_name}", :yellow

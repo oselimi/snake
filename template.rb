@@ -100,7 +100,7 @@ def add_friendly_id
 end
 
 # Main setup
-source_paths
+add_template_repository_to_source_path
 
 add_gems
 
